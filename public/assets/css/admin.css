@@ -1,0 +1,124 @@
+/*admin.css*/
+
+:root {
+    --purple: #6a0dad;
+    --purple-light: #8a2be2;
+    --purple-dark: #4b0082;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: var(--purple-dark);
+    color: white;
+    transition: all 0.3s;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.sidebar.collapsed {
+    margin-left: -250px;
+}
+
+.sidebar .logo-container {
+    padding: 30px 20px 10px;
+    text-align: center;
+}
+
+.sidebar .logo-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.sidebar .logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.sidebar .nav-link {
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: var(--purple);
+}
+
+.sidebar .nav-link.active:hover {
+    background-color: var(--purple-light);
+}
+
+.sidebar .sub-menu {
+    padding-left: 20px;
+}
+
+.sidebar .sub-menu .nav-link {
+    font-size: 0.9rem;
+    padding: 5px 15px;
+}
+
+.sidebar .nav-item {
+    margin-bottom: 5px;
+}
+
+.sidebar .logo-container a {
+    text-decoration: none !important;
+}
+
+.sidebar .nav-link .bi-chevron-down {
+    margin-left: 5px;
+}
+
+.main-content {
+    margin-left: 250px;
+    transition: all 0.3s;
+}
+
+.main-content.expanded {
+    margin-left: 0;
+}
+
+.navbar {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+}
+
+.card-header {
+    border-bottom: none;
+    font-weight: bold;
+}
+
+.table th {
+    border-top: none;
+}
+
+.profile-picture {
+    width: 32px;
+    height: 32px;
+    background-color: var(--purple);
+    color: white;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}

@@ -1,0 +1,125 @@
+/* user.css */
+
+:root {
+    --primary-color: #6a0dad;
+    --secondary-color: #8a2be2;
+    --third-color: #b233be;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--light-color);
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: var(--primary-color);
+    color: white;
+    transition: all 0.3s;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.sidebar.collapsed {
+    margin-left: -250px;
+}
+
+.sidebar .logo-container {
+    padding: 30px 20px 10px;
+    text-align: center;
+}
+
+.sidebar .logo-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.sidebar .logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.sidebar .nav-link {
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    transition: background-color 0.2s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: var(--third-color);
+}
+
+.main-content {
+    margin-left: 250px;
+    transition: all 0.3s;
+}
+
+.main-content.expanded {
+    margin-left: 0;
+}
+
+.navbar {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    border-bottom: none;
+    font-weight: bold;
+}
+
+.profile-picture {
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.btn-purple {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-purple:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        margin-left: -250px;
+    }
+
+    .sidebar.active {
+        margin-left: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .main-content.active {
+        margin-left: 250px;
+    }
+}

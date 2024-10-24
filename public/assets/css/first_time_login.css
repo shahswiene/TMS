@@ -1,0 +1,41 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.card-header {
+    background-color: #6a0dad;
+    color: white;
+    font-weight: bold;
+}
+
+.strength-indicator {
+    height: 5px;
+    transition: all 0.3s ease;
+}
+
+.form-label {
+    font-size: 0.9rem;
+}
+
+.form-control,
+.form-select {
+    font-size: 0.9rem;
+}
+
+.btn {
+    font-size: 0.9rem;
+}

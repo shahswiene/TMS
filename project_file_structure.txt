@@ -1,0 +1,90 @@
+aaa/
+├── docker-compose.yml
+├── Dockerfile
+├── generate_ssl.sh
+├── generate_structure.py
+├── nginx.conf
+├── mysql-init/
+│   ├── init.sql
+├── public/
+│   ├── add_agent.php
+│   ├── add_department.php
+│   ├── add_position.php
+│   ├── add_user.php
+│   ├── administrators.php
+│   ├── administrators_components.php
+│   ├── admin_dashboard.php
+│   ├── agents.php
+│   ├── agents_components.php
+│   ├── auth_middleware.php
+│   ├── change_password.php
+│   ├── config.php
+│   ├── dashboard.php
+│   ├── delete_agent.php
+│   ├── delete_attachment.php
+│   ├── delete_department.php
+│   ├── delete_position.php
+│   ├── delete_user.php
+│   ├── departments.php
+│   ├── departments_components.php
+│   ├── favicon.ico
+│   ├── first_time_login.php
+│   ├── get_agent_details.php
+│   ├── get_department_details.php
+│   ├── get_position_details.php
+│   ├── get_user_details.php
+│   ├── index.php
+│   ├── login.php
+│   ├── logout.php
+│   ├── positions.php
+│   ├── positions_components.php
+│   ├── process_login.php
+│   ├── staffs.php
+│   ├── staffs_components.php
+│   ├── superadmin_common_components.php
+│   ├── superadmin_dashboard.php
+│   ├── superadmin_dashboard_components.php
+│   ├── toggle_agent_status.php
+│   ├── toggle_department_status.php
+│   ├── toggle_position_status.php
+│   ├── toggle_user_status.php
+│   ├── update_agent.php
+│   ├── update_department.php
+│   ├── update_position.php
+│   ├── update_user.php
+│   ├── assets/
+│   │   ├── css/
+│   │   │   ├── admin.css
+│   │   │   ├── first_time_login.css
+│   │   │   ├── style.css
+│   │   │   ├── user.css
+│   │   ├── images/
+│   │   │   ├── AICs.png
+│   │   ├── js/
+│   │   │   ├── admin.js
+│   │   │   ├── administrators.js
+│   │   │   ├── agents.js
+│   │   │   ├── departments.js
+│   │   │   ├── first_time_login.js
+│   │   │   ├── idle_logout.js
+│   │   │   ├── password_strength.js
+│   │   │   ├── positions.js
+│   │   │   ├── scripts.js
+│   │   │   ├── staffs.js
+│   │   │   ├── superadmin_dashboard.js
+│   │   │   ├── tickets.js
+│   │   │   ├── user.js
+│   ├── uploads/
+│   │   ├── ticket_attachments/
+│   │   │   ├── 670bc7be193f1_wazuh-module-overview-mitre-1728703779.pdf
+│   │   │   ├── 670c7ef9722b9_RASP Temperature Report.pdf
+│   │   │   ├── 670ccb21c596a_consolidated-security-report.pdf
+│   │   │   ├── 670ccc63191cc_AICS -TE28 - Q2 - Cover - 4.pdf
+│   │   │   ├── 670f310c18769_MITRE ATT Report 11102024 - SHAHSWIENE.docx
+│   │   │   ├── 670f312fcc319_research Meeting 270324.pdf
+│   │   │   ├── 670f3233d5d46_080824_ATTACK REPORT_msu.edu.my.docx
+│   │   │   ├── 670f37cd7e5f8_research Meeting 091023[1].docx
+│   │   │   ├── 670f414923bbd_agreement-letter-final.pdf
+│   │   │   ├── 6712032cb95a0_Screenshot 2024-04-04 162103.png
+│   ├── vendor/
+├── ssl/
