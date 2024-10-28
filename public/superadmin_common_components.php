@@ -24,6 +24,7 @@ function render_sidebar($active_page = '')
         ['icon' => 'hdd-network', 'text' => 'Agents', 'link' => 'agents.php'],
         ['icon' => 'building', 'text' => 'Departments', 'link' => 'departments.php'],
         ['icon' => 'person-badge', 'text' => 'Positions', 'link' => 'positions.php'],
+        ['icon' => 'file-earmark-text', 'text' => 'Incident Types', 'link' => 'incident_types.php'],
         ['icon' => 'ticket', 'text' => 'Tickets', 'link' => 'tickets.php'],
         ['icon' => 'file-earmark-text', 'text' => 'Reports', 'link' => 'reports.php'],
         ['icon' => 'clock-history', 'text' => 'Ticket Timeline', 'link' => '/ticket_timeline.php'],
@@ -121,6 +122,7 @@ function render_page($title, $content, $active_page = '')
     $page .= '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
     $page .= '<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>';
     $page .= '<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>';
+    $page .= '<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>';
     $page .= '<script src="/assets/js/admin.js"></script>';
     $page .= '<script src="/assets/js/idle_logout.js"></script>';
     $page .= '</body>';

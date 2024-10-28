@@ -48,6 +48,17 @@ CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (position_id) REFERENCES positions(position_id) ON DELETE SET NULL
 );
 
+-- Create user security history table
+CREATE TABLE IF NOT EXISTS user_security_history (
+    history_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    action_type ENUM('two_factor_update', 'security_qa_update', 'status_change') NOT NULL,
+    action_description TEXT NOT NULL,
+    created_by_ip VARCHAR(45),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
 -- Create agents table
 CREATE TABLE IF NOT EXISTS agents (
     agent_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -63,9 +74,119 @@ CREATE TABLE IF NOT EXISTS agents (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Create incident types table
+CREATE TABLE IF NOT EXISTS incident_types (
+    incident_type_id INT AUTO_INCREMENT PRIMARY KEY,
+    type_name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT,
+    default_priority ENUM('low', 'medium', 'high', 'critical') DEFAULT 'medium',
+    default_sla_hours INT NOT NULL,
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Create SLA configuration table
+CREATE TABLE IF NOT EXISTS sla_configs (
+    sla_id INT AUTO_INCREMENT PRIMARY KEY,
+    priority ENUM('low', 'medium', 'high', 'critical') NOT NULL,
+    response_time_hours INT NOT NULL,
+    resolution_time_hours INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Create tickets table
+CREATE TABLE IF NOT EXISTS tickets (
+    ticket_id VARCHAR(20) PRIMARY KEY,  -- Custom format like "SOC-2024-0001"
+    title VARCHAR(255) NOT NULL,
+    incident_type_id INT NOT NULL,
+    priority ENUM('low', 'medium', 'high', 'critical') NOT NULL,
+    description TEXT NOT NULL,
+    wazuh_log JSON,
+    assigned_agent_id INT,
+    created_by INT NOT NULL,
+    status ENUM('new', 'assigned', 'in_progress', 'pending', 'resolved', 'closed') DEFAULT 'new',
+    sla_deadline TIMESTAMP,
+    sla_breach_status ENUM('within', 'warning', 'breached') DEFAULT 'within',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    resolved_at TIMESTAMP NULL,
+    closed_at TIMESTAMP NULL,
+    FOREIGN KEY (incident_type_id) REFERENCES incident_types(incident_type_id),
+    FOREIGN KEY (assigned_agent_id) REFERENCES agents(agent_id),
+    FOREIGN KEY (created_by) REFERENCES users(user_id)
+);
+
+-- Create ticket comments table
+CREATE TABLE IF NOT EXISTS ticket_comments (
+    comment_id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id VARCHAR(20) NOT NULL,
+    user_id INT NOT NULL,
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- Create ticket attachments table
+CREATE TABLE IF NOT EXISTS ticket_attachments (
+    attachment_id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id VARCHAR(20) NOT NULL,
+    user_id INT NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(512) NOT NULL,
+    file_size INT NOT NULL,
+    file_type VARCHAR(100) NOT NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- Create ticket history table
+CREATE TABLE IF NOT EXISTS ticket_history (
+    history_id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id VARCHAR(20) NOT NULL,
+    user_id INT NOT NULL,
+    action_type ENUM('created', 'updated', 'comment_added', 'attachment_added', 
+                    'status_changed', 'priority_changed', 'agent_assigned', 'sla_updated') NOT NULL,
+    old_value TEXT,
+    new_value TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- Create ticket watchers table
+CREATE TABLE IF NOT EXISTS ticket_watchers (
+    watcher_id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id VARCHAR(20) NOT NULL,
+    user_id INT NOT NULL,
+    notification_preference ENUM('all', 'major_updates', 'resolution_only') DEFAULT 'all',
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_ticket_watcher (ticket_id, user_id),
+    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- Create notification settings table
+CREATE TABLE IF NOT EXISTS notification_settings (
+    setting_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    email_notifications BOOLEAN DEFAULT TRUE,
+    in_app_notifications BOOLEAN DEFAULT TRUE,
+    notify_on_assignment BOOLEAN DEFAULT TRUE,
+    notify_on_update BOOLEAN DEFAULT TRUE,
+    notify_on_comment BOOLEAN DEFAULT TRUE,
+    notify_on_resolution BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_user_settings (user_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
 
 -- Add indexes for better query performance
-
 -- Indexes for users table
 CREATE INDEX idx_users_username ON users(username);
 CREATE INDEX idx_users_email ON users(email);
@@ -79,6 +200,155 @@ CREATE INDEX idx_agents_name ON agents(name);
 CREATE INDEX idx_agents_ip ON agents(ip_address);
 CREATE INDEX idx_agents_status ON agents(status);
 
+-- Indexes for tickets and related tables
+CREATE INDEX idx_tickets_status ON tickets(status);
+CREATE INDEX idx_tickets_priority ON tickets(priority);
+CREATE INDEX idx_tickets_assigned_agent ON tickets(assigned_agent_id);
+CREATE INDEX idx_tickets_created_by ON tickets(created_by);
+CREATE INDEX idx_tickets_incident_type ON tickets(incident_type_id);
+CREATE INDEX idx_ticket_history_ticket ON ticket_history(ticket_id);
+CREATE INDEX idx_ticket_comments_ticket ON ticket_comments(ticket_id);
+CREATE INDEX idx_ticket_attachments_ticket ON ticket_attachments(ticket_id);
+CREATE INDEX idx_ticket_watchers_ticket ON ticket_watchers(ticket_id);
+CREATE INDEX idx_ticket_watchers_user ON ticket_watchers(user_id);
+CREATE INDEX idx_user_security_history ON user_security_history(user_id);
+
+-- Create triggers
+DELIMITER //
+
+-- Trigger to enforce security requirements for user activation
+CREATE TRIGGER enforce_security_requirements
+BEFORE UPDATE ON users
+FOR EACH ROW
+BEGIN
+    -- Check if user is trying to become active without any security measures
+    IF NEW.is_active = 'active' AND
+       (
+           -- Neither security Q&A nor 2FA is set up
+           (
+               (NEW.security_question IS NULL OR NEW.security_question = '' OR 
+                NEW.security_answer_hash IS NULL OR NEW.security_answer_hash = '')
+               AND
+               (NEW.two_factor_enabled = FALSE OR NEW.two_factor_enabled = 0)
+           )
+       ) THEN
+        SET NEW.is_active = 'pending';
+    END IF;
+END;
+//
+
+-- Trigger to log security changes
+CREATE TRIGGER log_security_requirement_check
+AFTER UPDATE ON users
+FOR EACH ROW
+BEGIN
+    IF OLD.is_active != NEW.is_active OR 
+       OLD.two_factor_enabled != NEW.two_factor_enabled OR
+       OLD.security_question != NEW.security_question OR
+       OLD.security_answer_hash != NEW.security_answer_hash THEN
+        
+        INSERT INTO user_security_history (
+            user_id,
+            action_type,
+            action_description,
+            created_by_ip
+        ) 
+        SELECT 
+            NEW.user_id,
+            'status_change',
+            CASE
+                WHEN NEW.is_active = 'pending' AND 
+                     (
+                         (NEW.security_question IS NULL OR NEW.security_question = '' OR 
+                          NEW.security_answer_hash IS NULL OR NEW.security_answer_hash = '')
+                         AND
+                         (NEW.two_factor_enabled = FALSE OR NEW.two_factor_enabled = 0)
+                     )
+                THEN 'Activation denied - No security measures configured'
+                WHEN NEW.is_active = 'active' AND NEW.two_factor_enabled = TRUE 
+                THEN 'User activated with 2FA'
+                WHEN NEW.is_active = 'active' AND 
+                     (NEW.security_question IS NOT NULL AND NEW.security_question != '' AND 
+                      NEW.security_answer_hash IS NOT NULL AND NEW.security_answer_hash != '')
+                THEN 'User activated with Security Q&A'
+                ELSE 'Security settings updated'
+            END,
+            NEW.last_ip_address;
+    END IF;
+END;
+//
+
+-- Trigger to add ticket creator as watcher
+CREATE TRIGGER add_ticket_creator_as_watcher
+AFTER INSERT ON tickets
+FOR EACH ROW
+BEGIN
+    INSERT INTO ticket_watchers (ticket_id, user_id, notification_preference)
+    VALUES (NEW.ticket_id, NEW.created_by, 'all');
+END;
+//
+
+-- Trigger to add assigned agent as watcher
+CREATE TRIGGER add_assigned_agent_as_watcher
+AFTER UPDATE ON tickets
+FOR EACH ROW
+BEGIN
+    IF NEW.assigned_agent_id IS NOT NULL AND 
+       (OLD.assigned_agent_id IS NULL OR NEW.assigned_agent_id != OLD.assigned_agent_id) THEN
+        INSERT INTO ticket_watchers (ticket_id, user_id, notification_preference)
+        VALUES (NEW.ticket_id, NEW.assigned_agent_id, 'all')
+        ON DUPLICATE KEY UPDATE notification_preference = 'all';
+    END IF;
+END;
+//
+
+-- Trigger to add comment author as watcher
+CREATE TRIGGER add_commenter_as_watcher
+AFTER INSERT ON ticket_comments
+FOR EACH ROW
+BEGIN
+    INSERT INTO ticket_watchers (ticket_id, user_id, notification_preference)
+    VALUES (NEW.ticket_id, NEW.user_id, 'all')
+    ON DUPLICATE KEY UPDATE notification_preference = notification_preference;
+END;
+//
+
+-- Trigger to track ticket history
+CREATE TRIGGER track_ticket_history
+AFTER UPDATE ON tickets
+FOR EACH ROW
+BEGIN
+    -- Track status changes
+    IF OLD.status != NEW.status THEN
+        INSERT INTO ticket_history (ticket_id, user_id, action_type, old_value, new_value)
+        VALUES (NEW.ticket_id, NEW.created_by, 'status_changed', OLD.status, NEW.status);
+    END IF;
+    
+    -- Track priority changes
+    IF OLD.priority != NEW.priority THEN
+        INSERT INTO ticket_history (ticket_id, user_id, action_type, old_value, new_value)
+        VALUES (NEW.ticket_id, NEW.created_by, 'priority_changed', OLD.priority, NEW.priority);
+    END IF;
+    
+    -- Track agent assignment changes
+    IF IFNULL(OLD.assigned_agent_id, 0) != IFNULL(NEW.assigned_agent_id, 0) THEN
+        INSERT INTO ticket_history (ticket_id, user_id, action_type, old_value, new_value)
+        VALUES (NEW.ticket_id, NEW.created_by, 'agent_assigned', 
+                IFNULL(OLD.assigned_agent_id, 'unassigned'), 
+                IFNULL(NEW.assigned_agent_id, 'unassigned'));
+    END IF;
+    
+    -- Track SLA changes
+    IF IFNULL(OLD.sla_deadline, '') != IFNULL(NEW.sla_deadline, '') THEN
+        INSERT INTO ticket_history (ticket_id, user_id, action_type, old_value, new_value)
+        VALUES (NEW.ticket_id, NEW.created_by, 'sla_updated', 
+                IFNULL(OLD.sla_deadline, 'no_sla'), 
+                IFNULL(NEW.sla_deadline, 'no_sla'));
+    END IF;
+END;
+//
+
+DELIMITER ;
 
 -- Insert default data
 

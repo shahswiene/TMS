@@ -60,21 +60,19 @@ try {
         unset($user['security_answer_hash']);
 
         echo json_encode([
-            'success' => true, 
+            'success' => true,
             'data' => $user
         ]);
     } else {
         echo json_encode([
-            'success' => false, 
+            'success' => false,
             'message' => 'User not found'
         ]);
     }
-
 } catch (PDOException $e) {
     error_log($e->getMessage());
     echo json_encode([
-        'success' => false, 
+        'success' => false,
         'message' => 'An error occurred while fetching user details'
     ]);
 }
-?>

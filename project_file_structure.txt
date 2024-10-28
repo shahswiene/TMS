@@ -1,4 +1,4 @@
-aaa/
+AICS-TMS/
 ├── docker-compose.yml
 ├── Dockerfile
 ├── generate_ssl.sh
@@ -8,6 +8,7 @@ aaa/
 │   ├── init.sql
 ├── public/
 │   ├── add_agent.php
+│   ├── add_comment.php
 │   ├── add_department.php
 │   ├── add_position.php
 │   ├── add_user.php
@@ -19,10 +20,13 @@ aaa/
 │   ├── auth_middleware.php
 │   ├── change_password.php
 │   ├── config.php
+│   ├── create_incident_type.php
+│   ├── create_ticket.php
 │   ├── dashboard.php
 │   ├── delete_agent.php
 │   ├── delete_attachment.php
 │   ├── delete_department.php
+│   ├── delete_incident_type.php
 │   ├── delete_position.php
 │   ├── delete_user.php
 │   ├── departments.php
@@ -31,8 +35,12 @@ aaa/
 │   ├── first_time_login.php
 │   ├── get_agent_details.php
 │   ├── get_department_details.php
+│   ├── get_incident_type_details.php
 │   ├── get_position_details.php
+│   ├── get_ticket_details.php
 │   ├── get_user_details.php
+│   ├── incident_types.php
+│   ├── incident_types_components.php
 │   ├── index.php
 │   ├── login.php
 │   ├── logout.php
@@ -44,13 +52,18 @@ aaa/
 │   ├── superadmin_common_components.php
 │   ├── superadmin_dashboard.php
 │   ├── superadmin_dashboard_components.php
+│   ├── tickets.php
+│   ├── tickets_components.php
 │   ├── toggle_agent_status.php
 │   ├── toggle_department_status.php
+│   ├── toggle_incident_type_status.php
 │   ├── toggle_position_status.php
 │   ├── toggle_user_status.php
 │   ├── update_agent.php
 │   ├── update_department.php
+│   ├── update_incident_type.php
 │   ├── update_position.php
+│   ├── update_ticket.php
 │   ├── update_user.php
 │   ├── assets/
 │   │   ├── css/
@@ -67,6 +80,7 @@ aaa/
 │   │   │   ├── departments.js
 │   │   │   ├── first_time_login.js
 │   │   │   ├── idle_logout.js
+│   │   │   ├── incident_types.js
 │   │   │   ├── password_strength.js
 │   │   │   ├── positions.js
 │   │   │   ├── scripts.js
@@ -76,15 +90,5 @@ aaa/
 │   │   │   ├── user.js
 │   ├── uploads/
 │   │   ├── ticket_attachments/
-│   │   │   ├── 670bc7be193f1_wazuh-module-overview-mitre-1728703779.pdf
-│   │   │   ├── 670c7ef9722b9_RASP Temperature Report.pdf
-│   │   │   ├── 670ccb21c596a_consolidated-security-report.pdf
-│   │   │   ├── 670ccc63191cc_AICS -TE28 - Q2 - Cover - 4.pdf
-│   │   │   ├── 670f310c18769_MITRE ATT Report 11102024 - SHAHSWIENE.docx
-│   │   │   ├── 670f312fcc319_research Meeting 270324.pdf
-│   │   │   ├── 670f3233d5d46_080824_ATTACK REPORT_msu.edu.my.docx
-│   │   │   ├── 670f37cd7e5f8_research Meeting 091023[1].docx
-│   │   │   ├── 670f414923bbd_agreement-letter-final.pdf
-│   │   │   ├── 6712032cb95a0_Screenshot 2024-04-04 162103.png
 │   ├── vendor/
 ├── ssl/

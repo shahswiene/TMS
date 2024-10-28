@@ -45,4 +45,3 @@ $content .= render_edit_staff_modal($departments, $positions);
 $content .= '<script src="/assets/js/staffs.js"></script>';
 
 echo render_page('Staffs', $content, 'Staffs');
-?>
