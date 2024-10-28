@@ -35,7 +35,7 @@ try {
         throw new Exception('Agent ID, name, and IP address are required');
     }
 
-    $stmt = $pdo->prepare('UPDATE agents SET name = ?, ip_address = ?, agent_group = ?, operating_system = ?, cluster_node = ?, version = ? WHERE agent_id = ?');
+    $stmt = $pdo->prepare('UPDATE wazuh_agents SET name = ?, ip_address = ?, agent_group = ?, operating_system = ?, cluster_node = ?, version = ? WHERE agent_id = ?');
     $stmt->execute([$name, $ip_address, $agent_group, $operating_system, $cluster_node, $version, $agent_id]);
     
     echo json_encode(['success' => true, 'message' => 'Agent updated successfully']);

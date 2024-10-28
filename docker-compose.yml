@@ -4,8 +4,8 @@ services:
   openresty:
     image: openresty/openresty:alpine
     ports:
-      - "8080:80"  # Changed from 8080 to 9080
-      - "8443:443" # Changed from 8443 to 9443
+      - "9080:80"  # Changed from 8080 to 9080
+      - "9443:443" # Changed from 8443 to 9443
     volumes:
       - ./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ssl_certs:/etc/ssl:ro
@@ -47,7 +47,7 @@ services:
       PMA_USER: aics_user
       PMA_PASSWORD: aics_password
     ports:
-      - "8081:80" # Changed from 8081 to 9081
+      - "9081:80" # Changed from 8081 to 9081
     depends_on:
       - mysql
     networks:

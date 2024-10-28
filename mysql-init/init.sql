@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (position_id) REFERENCES positions(position_id) ON DELETE SET NULL
 );
 
--- Create agents table
-CREATE TABLE IF NOT EXISTS agents (
+-- Create wazuh agents table
+CREATE TABLE IF NOT EXISTS wazuh_agents (
     agent_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     ip_address VARCHAR(45) NOT NULL,
@@ -74,11 +74,10 @@ CREATE INDEX idx_users_position ON users(position_id);
 CREATE INDEX idx_users_role ON users(role);
 CREATE INDEX idx_users_status ON users(is_active);
 
--- Indexes for agents table
-CREATE INDEX idx_agents_name ON agents(name);
-CREATE INDEX idx_agents_ip ON agents(ip_address);
-CREATE INDEX idx_agents_status ON agents(status);
-
+-- Indexes for wazuh_agents table
+CREATE INDEX idx_wazuh_agents_name ON wazuh_agents(name);
+CREATE INDEX idx_wazuh_agents_ip ON wazuh_agents(ip_address);
+CREATE INDEX idx_wazuh_agents_status ON wazuh_agents(status);
 
 -- Insert default data
 
@@ -98,7 +97,7 @@ INSERT INTO users (username, email, password_hash, department_id, role, is_activ
 VALUES ('admin', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1, 'admin', 1, 0, NOW(), 2)
 ON DUPLICATE KEY UPDATE updated_at = NOW();
 
-INSERT INTO agents (name, ip_address, operating_system, cluster_node, version, registration_date, status) VALUES
+INSERT INTO wazuh_agents (name, ip_address, operating_system, cluster_node, version, registration_date, status) VALUES
 ('wifi-student.msu.edu.my', '10.20.20.3', 'BSD 14.0', 'node01', 'v4.3.10', '2023-01-18 18:44:32', 'active'),
 ('eklas.msu.edu.my', '10.0.11.73', 'Ubuntu 20.04.6 LTS', 'node01', 'v4.7.5', '2023-01-18 20:16:02', 'active'),
 ('www.msucollege.edu.my', '10.0.11.203', 'Ubuntu 22.04.4 LTS', 'node01', 'v4.3.10', '2023-04-15 14:33:46', 'active'),

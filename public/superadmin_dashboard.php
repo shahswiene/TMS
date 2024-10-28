@@ -17,8 +17,8 @@ $total_number_users = count($users);
 $total_users = $pdo->query('SELECT COUNT(*) FROM users WHERE role = "user"')->fetchColumn();
 $total_admins = $pdo->query('SELECT COUNT(*) FROM users WHERE role = "admin"')->fetchColumn();
 $total_online_users = $pdo->query('SELECT COUNT(*) FROM users WHERE is_online = 1')->fetchColumn();
-$total_agents = $pdo->query('SELECT COUNT(*) FROM agents')->fetchColumn();
-$total_active_agents = $pdo->query('SELECT COUNT(*) FROM agents WHERE status = "active"')->fetchColumn();
+$total_agents = $pdo->query('SELECT COUNT(*) FROM wazuh_agents')->fetchColumn();
+$total_active_agents = $pdo->query('SELECT COUNT(*) FROM wazuh_agents WHERE status = "active"')->fetchColumn();
 
 // Fetch departments and positions for dropdowns
 $departments = $pdo->query('SELECT department_id, department_name FROM departments WHERE status = "active" ORDER BY department_name')->fetchAll();

@@ -35,7 +35,7 @@ if (empty($agent_id)) {
 }
 
 try {
-    $stmt = $pdo->prepare('DELETE FROM agents WHERE agent_id = ?');
+    $stmt = $pdo->prepare('DELETE FROM wazuh_agents WHERE agent_id = ?');
     $stmt->execute([$agent_id]);
     
     echo json_encode(['success' => true, 'message' => 'Agent deleted successfully']);

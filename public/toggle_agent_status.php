@@ -37,7 +37,7 @@ if (empty($agent_id) || empty($new_status)) {
 }
 
 try {
-    $stmt = $pdo->prepare('UPDATE agents SET status = ? WHERE agent_id = ?');
+    $stmt = $pdo->prepare('UPDATE wazuh_agents SET status = ? WHERE agent_id = ?');
     $stmt->execute([$new_status, $agent_id]);
     
     echo json_encode(['success' => true, 'message' => 'Agent status updated successfully']);
