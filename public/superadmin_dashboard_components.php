@@ -74,7 +74,8 @@ function render_users_table($users, $departments, $positions)
     return $content;
 }
 
-function get_status_badge($status) {
+function get_status_badge($status)
+{
     switch ($status) {
         case 'active':
             return '<span class="badge bg-success">Active</span>';
@@ -92,7 +93,7 @@ function render_user_row($usr)
     // Check if this is the only super admin
     $isSoleSuper = false;
     $isCurrentUserSuper = isset($_SESSION['role']) && $_SESSION['role'] === 'super';
-    
+
     if ($usr['role'] === 'super') {
         global $pdo;
         $stmt = $pdo->prepare('SELECT COUNT(*) FROM users WHERE role = "super"');
@@ -110,45 +111,45 @@ function render_user_row($usr)
     $content .= '<td>' . get_status_badge($usr['is_active']) . '</td>';
     $content .= '<td>' . ($usr['is_online'] ? '<span class="badge bg-success">Online</span>' : '<span class="badge bg-danger">Offline</span>') . '</td>';
     $content .= '<td>';
-    $content .= $usr['two_factor_enabled'] && $usr['security_question'] ? 
-               '<span class="badge bg-success">Completed</span>' : 
-               '<span class="badge bg-warning">Pending</span>';
+    $content .= $usr['two_factor_enabled'] && $usr['security_question'] ?
+        '<span class="badge bg-success">Completed</span>' :
+        '<span class="badge bg-warning">Pending</span>';
     $content .= '</td>';
     $content .= '<td>' . (isset($usr['last_login']) ? htmlspecialchars($usr['last_login']) : 'N/A') . '</td>';
     $content .= '<td>';
-    
+
     // Action buttons
     $content .= '<div class="btn-group" role="group">';
-    
+
     // Edit button - shown for all users
     $content .= '<button class="btn btn-sm btn-primary me-1 edit-user-btn" ' .
-                'data-user-id="' . $usr['user_id'] . '" ' .
-                'data-is-super="' . ($usr['role'] === 'super' ? 'true' : 'false') . '" ' .
-                'data-is-sole-super="' . ($isSoleSuper ? 'true' : 'false') . '">' .
-                'Edit</button>';
-    
+        'data-user-id="' . $usr['user_id'] . '" ' .
+        'data-is-super="' . ($usr['role'] === 'super' ? 'true' : 'false') . '" ' .
+        'data-is-sole-super="' . ($isSoleSuper ? 'true' : 'false') . '">' .
+        'Edit</button>';
+
     // Only show toggle and delete buttons if:
     // 1. Current user is super admin AND
     // 2. Target user is not the sole super admin
     if ($isCurrentUserSuper && !$isSoleSuper) {
         // Status toggle button
-        $content .= '<button class="btn btn-sm ' . 
-                   ($usr['is_active'] === 'active' ? 'btn-warning' : 'btn-success') . 
-                   ' me-1 toggle-status-btn" ' .
-                   'data-user-id="' . $usr['user_id'] . '" ' .
-                   'data-current-status="' . $usr['is_active'] . '">' .
-                   ($usr['is_active'] === 'active' ? 'Deactivate' : 'Activate') .
-                   '</button>';
-        
+        $content .= '<button class="btn btn-sm ' .
+            ($usr['is_active'] === 'active' ? 'btn-warning' : 'btn-success') .
+            ' me-1 toggle-status-btn" ' .
+            'data-user-id="' . $usr['user_id'] . '" ' .
+            'data-current-status="' . $usr['is_active'] . '">' .
+            ($usr['is_active'] === 'active' ? 'Deactivate' : 'Activate') .
+            '</button>';
+
         // Delete button - don't show for sole super admin
         if ($usr['role'] !== 'super' || !$isSoleSuper) {
             $content .= '<button class="btn btn-sm btn-danger delete-user-btn" ' .
-                       'data-user-id="' . $usr['user_id'] . '" ' .
-                       'data-username="' . htmlspecialchars($usr['username']) . '">' .
-                       'Delete</button>';
+                'data-user-id="' . $usr['user_id'] . '" ' .
+                'data-username="' . htmlspecialchars($usr['username']) . '">' .
+                'Delete</button>';
         }
     }
-    
+
     $content .= '</div>';
     $content .= '</td></tr>';
     return $content;
@@ -186,10 +187,10 @@ function render_edit_user_modal($departments, $positions)
                             <label for="editDepartment" class="form-label">Department</label>
                             <select class="form-select" id="editDepartment" name="department_id">
                                 <option value="">Select Department</option>';
-    
+
     foreach ($departments as $dept) {
-        $content .= '<option value="' . $dept['department_id'] . '">' . 
-                   htmlspecialchars($dept['department_name']) . '</option>';
+        $content .= '<option value="' . $dept['department_id'] . '">' .
+            htmlspecialchars($dept['department_name']) . '</option>';
     }
 
     $content .= '
@@ -201,8 +202,8 @@ function render_edit_user_modal($departments, $positions)
                                 <option value="">Select Position</option>';
 
     foreach ($positions as $pos) {
-        $content .= '<option value="' . $pos['position_id'] . '">' . 
-                   htmlspecialchars($pos['position_name']) . '</option>';
+        $content .= '<option value="' . $pos['position_id'] . '">' .
+            htmlspecialchars($pos['position_name']) . '</option>';
     }
 
     $content .= '
@@ -301,8 +302,13 @@ function render_add_user_modal($departments, $positions)
                             <div id="addStrengthIndicator" class="progress" style="height: 5px; margin-top: 5px;">
                                 <div class="progress-bar" role="progressbar" style="width: 0%; transition: width 0.3s ease"></div>
                             </div>
-                            <small class="text-muted">
-                                Password must be at least 12 characters long and contain lowercase, uppercase, numbers, and special characters ($@#&!)
+                            <small id="passwordHelpBlock" class="form-text text-muted" style="font-size: 0.75rem;">
+                                Password must contain:<br>
+                                • At least 12 characters<br>
+                                • At least 1 uppercase letter<br>
+                                • At least 1 lowercase letter<br>
+                                • At least 1 number<br>
+                                • At least 1 special character (!@#$%^&*()_+-=[]{}:"|,./<>?)
                             </small>
                         </div>
                         <div class="mb-3">

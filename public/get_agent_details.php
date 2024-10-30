@@ -26,7 +26,7 @@ if (empty($agent_id)) {
 }
 
 try {
-    $stmt = $pdo->prepare('SELECT * FROM agents WHERE agent_id = ?');
+    $stmt = $pdo->prepare('SELECT * FROM wazuh_agent WHERE agent_id = ?');
     $stmt->execute([$agent_id]);
     $agent = $stmt->fetch(PDO::FETCH_ASSOC);
 

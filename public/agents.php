@@ -12,7 +12,7 @@ if (!check_auth_and_redirect() || $_SESSION['role'] !== 'super') {
 }
 
 // Fetch all agents data
-$stmt = $pdo->prepare('SELECT * FROM agents');
+$stmt = $pdo->prepare('SELECT * FROM wazuh_agent');
 $stmt->execute();
 $agents = $stmt->fetchAll();
 

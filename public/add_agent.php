@@ -39,7 +39,7 @@ if (empty($name) || empty($ip_address)) {
 }
 
 try {
-    $stmt = $pdo->prepare('INSERT INTO agents (name, ip_address, agent_group, operating_system, cluster_node, version) VALUES (?, ?, ?, ?, ?, ?)');
+    $stmt = $pdo->prepare('INSERT INTO wazuh_agent (name, ip_address, agent_group, operating_system, cluster_node, version) VALUES (?, ?, ?, ?, ?, ?)');
     $stmt->execute([$name, $ip_address, $agent_group, $operating_system, $cluster_node, $version]);
     
     echo json_encode(['success' => true, 'message' => 'Agent added successfully']);

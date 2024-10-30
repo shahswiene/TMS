@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_message = 'Passwords do not match.';
     } elseif (strlen($new_password) < 12) {
         $error_message = 'Password must be at least 12 characters long.';
-    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/', $new_password)) {
+    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};:\"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};:\"\\|,.<>\/?]{12,}$/', $new_password)) {
         $error_message = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.';
     } elseif (password_verify($new_password, $user['password_hash'])) {
         $error_message = 'New password must be different from the current password.';
@@ -141,7 +141,9 @@ $security_questions = [
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
     <link rel="stylesheet" href="/assets/css/first_time_login.css">
     <style>
-        .iti { width: 100%; }
+        .iti {
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -182,7 +184,12 @@ $security_questions = [
                         <input type="password" class="form-control form-control-sm" id="new_password" name="new_password" required>
                         <div class="strength-indicator mt-1" id="strengthIndicator"></div>
                         <small id="passwordHelpBlock" class="form-text text-muted" style="font-size: 0.75rem;">
-                            At least 12 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character.
+                            Password must contain:<br>
+                            • At least 12 characters<br>
+                            • At least 1 uppercase letter<br>
+                            • At least 1 lowercase letter<br>
+                            • At least 1 number<br>
+                            • At least 1 special character (!@#$%^&*()_+-=[]{}:"|,./<>?)
                         </small>
                     </div>
                     <div class="mb-2">
@@ -214,4 +221,5 @@ $security_questions = [
     <script src="/assets/js/password_strength.js"></script>
     <script src="/assets/js/first_time_login.js"></script>
 </body>
+
 </html>

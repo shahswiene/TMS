@@ -52,6 +52,7 @@ $csrf_token = generate_csrf_token();
     <title>AICS-TMS - Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -69,19 +70,19 @@ $csrf_token = generate_csrf_token();
                                 <h3 class="mt-3">Threat Management System</h3>
                             </div>
                         </div>
-                        <!-- Second Slide: Version and Developers -->
+                        <!-- Second Slide: Contact and Version -->
                         <div class="carousel-item">
                             <div class="d-flex flex-column justify-content-center align-items-center">
-                                <h4>&nbsp;&nbsp;Version</h4>
-                                <ul class="list-styled">
-                                    <li>1.0</li>
-                                </ul>
-                                <h4>&nbsp;&nbsp;Developers</h4>
-                                <ul class="list-styled">
-                                    <li>ALYA</li>
-                                    <li>DHABITAH</li>
-                                    <li>SHAHSWIENE</li>
-                                </ul>
+                                <div class="icon-container">
+                                    <i class="bi bi-envelope-fill"></i>
+                                </div>
+                                <p class="contact-info">Any queries? Feel free to contact:</p>
+                                <p class="contact-info">
+                                    <a href="mailto:shahswiene_suthas@msu.edu.my" style="text-decoration: none; color: inherit;">
+                                        shahswiene_suthas@msu.edu.my
+                                    </a>
+                                </p>
+                                <p class="version-info mt-2">V1.0</p>
                             </div>
                         </div>
                     </div>
