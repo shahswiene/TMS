@@ -185,11 +185,11 @@ $security_questions = [
                         <div class="strength-indicator mt-1" id="strengthIndicator"></div>
                         <small id="passwordHelpBlock" class="form-text text-muted" style="font-size: 0.75rem;">
                             Password must contain:<br>
-                            â€¢ At least 12 characters<br>
-                            â€¢ At least 1 uppercase letter<br>
-                            â€¢ At least 1 lowercase letter<br>
-                            â€¢ At least 1 number<br>
-                            â€¢ At least 1 special character (!@#$%^&*()_+-=[]{}:"|,./<>?)
+                            • At least 12 characters<br>
+                            • At least 1 uppercase letter<br>
+                            • At least 1 lowercase letter<br>
+                            • At least 1 number<br>
+                            • At least 1 special character (!@#$%^&*()_+-=[]{}:"|,./<>?)
                         </small>
                     </div>
                     <div class="mb-2">

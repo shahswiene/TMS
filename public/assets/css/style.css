@@ -1,3 +1,4 @@
+/* Global Styles */
 body,
 html {
     height: 100%;
@@ -7,6 +8,7 @@ html {
     height: 100%;
 }
 
+/* Left Section (Carousel) */
 .left-section {
     background-color: #6a0dad;
     color: #fff;
@@ -17,6 +19,40 @@ html {
     text-align: center;
 }
 
+.carousel-inner img {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+}
+
+.carousel-indicators {
+    bottom: -90px;
+}
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 8rem; /* Larger font size for icon */
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.contact-info {
+    font-size: 1rem;
+    color: #fff;
+    text-align: center;
+}
+
+.version-info {
+    font-size: 1.2rem;
+    color: #ffddff;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Right Section (Login Form) */
 .right-section {
     background-color: #fff;
     display: flex;
@@ -46,29 +82,16 @@ html {
     background-color: #6a0dad;
     color: #fff;
     width: 75%;
-    /* Reduced button width to 75% */
     padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     margin: 0 auto;
-    /* Center the button */
     display: block;
-    /* Ensures it works with auto margin */
 }
 
 .login-btn:hover {
     background-color: #550b88;
-}
-
-.carousel-inner img {
-    max-width: 100%;
-    max-height: 300px;
-    object-fit: contain;
-}
-
-.carousel-indicators {
-    bottom: -90px;
 }
 
 .form-label {
